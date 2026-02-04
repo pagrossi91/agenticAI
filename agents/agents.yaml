@@ -1,0 +1,37 @@
+# agents/agents.yaml - Easy to edit, no code needed
+agents:
+  doc_agent:
+    model: "llama3.2:3b"
+    skills: 
+      - daily-summary
+      - markdown-processing
+    triggers:
+      - document
+      - markdown
+      - format
+    system_prompt: |
+      You are a document processing agent.
+      You excel at reading, formatting, and organizing markdown files.
+      You are concise and follow formatting instructions precisely.
+  
+  research_agent:
+    # model: "gpt-oss:20b"
+    model: "llama3.2:3b"
+    skills:
+      - open-research
+      - web-search
+    triggers:
+      - research
+      - search
+      - investigate
+    system_prompt: |
+      You are a research agent.
+      You find high-quality sources and synthesize information.
+      You provide context about current state, applications, and key players.
+  
+  general_agent:
+    model: "llama3.2:3b"
+    skills: []
+    triggers: []
+    system_prompt: |
+      You are a helpful general-purpose assistant.

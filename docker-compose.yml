@@ -1,0 +1,86 @@
+services:
+  openwebui:
+    container_name: openwebui
+    networks:
+      - isolated_net
+    image: ghcr.io/open-webui/open-webui:main
+    environment:
+      WEBUI_AUTH: false
+    ports:
+      - "127.0.0.1:3000:8080"
+    volumes:
+      - ./open-webui:/app/backend/data
+
+  # n8n:
+  #   container_name: n8n
+  #   image: docker.n8n.io/n8nio/n8n
+  #   restart: always
+  #   networks:
+  #     - isolated_net
+  #   ports:
+  #     - "127.0.0.1:5678:5678"
+  #   # labels:
+  #   #   - traefik.enable=true
+  #   #   - traefik.http.routers.n8n.rule=Host(`${SUBDOMAIN}.${DOMAIN_NAME}`)
+  #   #   - traefik.http.routers.n8n.tls=true
+  #   #   - traefik.http.routers.n8n.entrypoints=web,websecure
+  #   #   - traefik.http.routers.n8n.tls.certresolver=mytlschallenge
+  #   #   - traefik.http.middlewares.n8n.headers.SSLRedirect=true
+  #   #   - traefik.http.middlewares.n8n.headers.STSSeconds=315360000
+  #   #   - traefik.http.middlewares.n8n.headers.browserXSSFilter=true
+  #   #   - traefik.http.middlewares.n8n.headers.contentTypeNosniff=true
+  #   #   - traefik.http.middlewares.n8n.headers.forceSTSHeader=true
+  #   #   - traefik.http.middlewares.n8n.headers.SSLHost=${DOMAIN_NAME}
+  #   #   - traefik.http.middlewares.n8n.headers.STSIncludeSubdomains=true
+  #   #   - traefik.http.middlewares.n8n.headers.STSPreload=true
+  #   #   - traefik.http.routers.n8n.middlewares=n8n@docker
+  #   # env_file:
+  #   #   - ./n8n/.env
+  #   environment:
+  #     N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: true
+  #     # N8N_HOST: ${SUBDOMAIN}.${DOMAIN_NAME}
+  #     N8N_PORT: 5678
+  #     # N8N_PROTOCOL: https
+  #     N8N_RUNNERS_ENABLED: true
+  #     # NODE_ENV: production
+  #     # EBHOOK_URL: https://${SUBDOMAIN}.${DOMAIN_NAME}/
+  #     OLLAMA_HOST: host.docker.internal:11434
+  #     TZ: America/New_York
+  #     NODES_EXCLUDE: "[]"
+  #   volumes:
+  #     - ./n8n/data:/home/node/.n8n
+  #     - ./n8n/local-files:/files
+
+  # lightrag:
+  #   container_name: lightrag
+  #   image: ghcr.io/hkuds/lightrag:latest
+  #   networks:
+  #     - isolated_net
+  #   build:
+  #     context: ./lightrag
+  #     dockerfile: Dockerfile
+  #     tags:
+  #       - ghcr.io/hkuds/lightrag:latest
+  #   ports:
+  #     - "${PORT:-9621}:9621"
+  #   volumes:
+  #     - ./lightrag/data/rag_storage:/app/data/rag_storage
+  #     - ./lightrag/data/inputs:/app/data/inputs
+  #     - ./lightrag/data/tiktoken:/app/data/tiktoken
+  #     - ./lightrag/config.ini:/app/config.ini
+  #     - ./lightrag/.env:/app/.env
+  #   env_file: ./lightrag/.env
+  #   environment:
+  #     - TIKTOKEN_CACHE_DIR=/app/data/tiktoken
+  #   restart: unless-stopped
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+
+# volumes:
+#   open-webui:
+#   n8n_data:
+
+networks:
+  isolated_net:
+    internal: false
+    driver: bridge
